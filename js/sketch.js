@@ -13,7 +13,7 @@ var color5 = '#2e2e33';
 var color6 = '#2e2e33';
 
 function preload() {
-	img = loadImage('/assets/harmashatar-cropped.jpg')
+	img = loadImage('./assets/harmashatar-cropped.jpg')
 }
 function loaded(result) {
 	print(result)
