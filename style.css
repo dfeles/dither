@@ -6,7 +6,8 @@ body {
 .qs_main {
     background-color: #2a2a2a;
     text-align: left;
-    position: absolute;
+    position: fixed;
+    overflow-y: scroll;
     width: 200px;
     top: 0;
     right: 0;
