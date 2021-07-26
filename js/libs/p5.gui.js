@@ -108,6 +108,10 @@
             qs.addButton(title, callback);
         };
 
+        this.addFileChooser = function(title, labelStr, filter, callback) {
+            qs.addFileChooser(title, labelStr, filter, callback);
+        };
+
         this.setValue = function(title, value) {
             qs.setValue(title, value);
         };

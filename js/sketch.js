@@ -5,12 +5,13 @@ var shape = ['Floyd - Steinberg'];
 var label = 'label';
 var factor = 1;
 var steps = 2;
-var color1 = '#2e2e33';
-var color2 = '#2e2e33';
-var color3 = '#2e2e33';
-var color4 = '#2e2e33';
-var color5 = '#2e2e33';
-var color6 = '#2e2e33';
+var black_and_white = false;
+var color1 = '#caa27f';
+var color2 = '#b1bcbf';
+var color3 = '#bdc7c9';
+var color4 = '#2f2d2e';
+var color5 = '#202020';
+var color6 = '#252328';
 
 function preload() {
 	img = loadImage('./assets/harmashatar-cropped.jpg')
@@ -47,16 +48,24 @@ function setup() {
 
 	// Create Layout GUI
 	gui = createGui('Dithering');
-	gui.addGlobals('bgColor', 'shape', 'label', 'factor', 'steps', 'color1', 'color2', 'color3', 'color4', 'color5', 'color6');
+	gui.addGlobals('bgColor', 'shape', 'label', 'factor', 'steps', 'black_and_white', 'color1', 'color2', 'color3', 'color4', 'color5', 'color6');
 
 	gui.addButton("Dither", function() {
 		dither.dither();
 		draw();
 	});
+	
+	var input = createFileInput(function(file) {
+		print(file.data);
+	});
+	input.parent('content');
+	console.log(input.parent);
 
 	// Don't loop automatically
 	noLoop();
 	draw();
+
+	image(img, 0, 0, windowWidth, aratio*windowWidth);
 }
 
 
@@ -65,9 +74,6 @@ function draw() {
 	if(dither) {
 		if(dither.ready) {
 			dither.display();
-			print('raj');
-		} else {
-			// image(img, 0, 0, windowWidth, aratio*windowWidth);
 			print('raj');
 		}
 	}
@@ -159,7 +165,7 @@ class Dither {
   
 	dither() {
 		this.outcomePixels = [...this.pixels];
-
+		var colors = [color(color1),color(color2),color(color3),color(color4),color(color5),color(color6)]
 		for (var y = 0; y < this.image.height-1; y+=steps) {
 			if(y%10 == 0) print(y);
 			for (var x = 1; x < this.image.width-1; x+=steps) {
@@ -167,9 +173,21 @@ class Dither {
 			  var oldR = red(pix);
 			  var oldG = green(pix);
 			  var oldB = blue(pix);
-			  var newR = round(factor * oldR / 255) * (255/factor);
-			  var newG = round(factor * oldG / 255) * (255/factor);
-			  var newB = round(factor * oldB / 255) * (255/factor);
+
+			  var selectedColor = colors[0];
+			  var distance = 99999999;
+			  for(var i = 0; i< colors.length; i++) {
+				  let c = colors[i];
+				  let _dist = dist(oldR,oldG,oldB, red(c), green(c), blue(c))
+				  if( _dist < distance) {
+					  selectedColor = c
+					  distance = _dist;
+				  }
+			  }
+
+			  var newR = red(selectedColor);
+			  var newG = green(selectedColor);
+			  var newB = blue(selectedColor);
 
 			  this.setIndexPixel(x, y, color(newR, newG, newB))
 			//   this.outcomeValues.set(x,y, color(newR, newG, newB))

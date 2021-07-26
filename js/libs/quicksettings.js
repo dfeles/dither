@@ -263,7 +263,7 @@
         },
 
         _createContent: function () {
-            this._content = createElement("div", null, "qs_content", this._panel);
+            this._content = createElement("div", "content", "qs_content", this._panel);
         },
 
         _createContainer: function () {
@@ -1077,7 +1077,7 @@
                 control: fileChooser,
                 label: label,
                 getValue: function () {
-                    return this.control.files[0];
+                    return this.control.files;
                 }
             }
 
